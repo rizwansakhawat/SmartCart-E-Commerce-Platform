@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %} Home {% endblock title %} 
+    
+
+
+{% block content %}
+    <h2>All products</h2>
+    
+    {% for product in products %}
+        <p>
+            <a href="{% url 'product_detail' product.id %}">
+                {{product.name}} -RS {{product.price}}
+            </a>
+        </p>
+    {% empty %}
+    <p>NO product available</p>
+    {% endfor %}
+ 
+        
+{% endblock content %}
+
+
+!
+    
