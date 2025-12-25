@@ -9,7 +9,22 @@
         
 </head>
 <body>
-    <header><h1>E-Commernce</h1></header>
+    <header>
+        <h1>E-Commernce</h1>
+        {% if user.is_authenticated %}
+            <p>Welcom , {{user.username}}</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button>Logout</button>
+            </form>
+
+        {% else %}
+        <a href="{% url 'login' %}"><button>Login</button></a>
+        {% endif %}
+        <h2><a href="{% url 'cart' %}"><button>Your cart</button></a></h2>
+        <a href="{% url 'home' %}"><button>Home page</button></a>
+            
+    </header>
     <hr>
 
     

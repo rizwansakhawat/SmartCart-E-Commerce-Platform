@@ -8,12 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-# class AddToCartView(LoginRequiredMixin, View):
-#     login_url = "/login/"
-
-
 class AddToCartView(LoginRequiredMixin, View):
-    login_url = "/login/"
+    login_url = "login"
     
     
     def post(self, request, product_id):

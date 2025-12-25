@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Checkout</h2>
+<table>
+    <tr>
+        <th>Product</th>
+        <th>quantity</th>
+        <th>Total</th>
+    </tr>
+    
+    {% for item in items %}
+    <tr>
+        <td>{{item.product.name}} </td>
+        <td>{{item.quantity}} </td>
+        <td>{{item.total_price}} </td>
+    </tr>
+    {% endfor %}
+</table>
+<h3>Grand Total: RS {{total}} </h3>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <button>Place Order</button>
+</form>
+<a href="{% url 'cart' %}"><button>back to cart</button></a>
+
+{% endblock content %}
