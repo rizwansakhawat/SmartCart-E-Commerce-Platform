@@ -13,6 +13,7 @@
         <h1>E-Commernce</h1>
         {% if user.is_authenticated %}
             <p>Welcom , {{user.username}}</p>
+            <a href="{% url 'my_orders' %}"> <button>My Orders</button></a>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button>Logout</button>
@@ -20,6 +21,7 @@
 
         {% else %}
         <a href="{% url 'login' %}"><button>Login</button></a>
+        <a href="{% url 'register' %}"><button>Register</button></a>
         {% endif %}
         <h2><a href="{% url 'cart' %}"><button>Your cart</button></a></h2>
         <a href="{% url 'home' %}"><button>Home page</button></a>
