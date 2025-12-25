@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Your cart{% endblock title %}
+
+{% block content %}
+<h2>Your shopping cart</h2>
+
+
+{% if items %}
+    
+<table border="1" cellpadding="10" >
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>price</th>
+        <th>Total</th>
+    </tr>
+    
+    {% for item in items %}
+    <tr>
+        <td>{{item.product.name}} </td>
+        <td>{{item.quantity}} </td>
+        <td>
+            <form method="post" action="{% url 'update_cart_item' item.id 'increase' %}">
+                {% csrf_token %}
+                <button>+</button>
+            </form>
+        </td>
+        <td>RS {{item.product.price}} </td>
+
+        <td>RS {{item.total_price}} </td>
+        <td>
+            <form action="{% url 'remove_from_cart' item.id %}" method='post'>
+                {% csrf_token %}
+                <button type="submit">Remove</button>
+            </form>
+        </td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+    <h3>Grand Total: Rs {{total}} </h3>
+{% else %}
+<p>Your Cart in empty.</p>
+{% endif %}
+<a href="{% url 'home' %}">Continue shopping</a>
+
+{% endblock content %}
+
+
+    
+    

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{product.name}} {% endblock title %}
+
+{% block content %}
+<h2>product.name</h2>
+
+<p>price: RS{{product.price}} </p>
+<p >{{product.description}} </p>
+
+<h3>images</h3>
+
+{% for img in product.images.all %}
+    <img src="{{img.image.url}}" width="200">
+    
+{% empty %}
+<p>no imge</p>
+
+    
+{% endfor %}
+<div>
+<form method="post" action="{% url 'add_to_cart' product.id %}">
+    {% csrf_token %}
+    <button type="submit">Add to Cart</button>
+</form>
+
+
+</div>
+<br>
+<a href="{% url 'home' %}">Home Page</a>
+    
+{% endblock content %}
