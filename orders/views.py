@@ -57,12 +57,17 @@ class MyOrderView(LoginRequiredMixin, ListView):
 # order detail view
 class OrderDetailView(LoginRequiredMixin , DetailView):
     model = Order
-    template_name = "orders/detail.html"
+    template_name = "orders/order_detail.html"
     context_object_name= "order"
     
     def get_queryset(self):
         return Order.objects.filter(user= self.request.user)
 
+
+# OPTIONAL: Prevent Item Editing (Best Practice)
+# Already done via:
+# readonly_fields = ("product", "quantity", "price")
+# Admin cannot accidentally change order history
     
 
 

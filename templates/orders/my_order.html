@@ -10,15 +10,19 @@
             <th>Date</th>
             <th>total</th>
             <th>view</th>
+            <th>status</th>
         </tr>
         
         {% for order in orders %}
+        <tr>
         <td>#{{order.id}} </td>
         <td>{{order.created_at|date:"Y-m-d" }} </td>
         <td>RS {{order.total_price}} </td>
         <td>
             <a href="{% url 'order_detail' order.id %}"><button>view</button></a>
         </td>
+        <td>{{order.status|title}} </td>
+        </tr>
         {% endfor %}
     </table>
 {% else %}
