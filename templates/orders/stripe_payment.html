@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Stripe Card Payment</h2>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<form id="payment-form">
+    <div id="card-element" style="width:300px; padding:10px; border:1px solid #ccc;"></div>
+    <br>
+    <button id="submit">Pay Now</button>
+</form>
+
+<p id="error-message" style="color:red;"></p>
+
+<script>
+    const stripe = Stripe("{{ stripe_key }}");
+    const elements = stripe.elements();
+
+    const card = elements.create("card");
+    card.mount("#card-element");
+
+    const form = document.getElementById("payment-form");
+    const errorMessage = document.getElementById("error-message");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(
+            "{{ client_secret }}",
+            {
+                payment_method: {
+                    card: card
+                }
+            }
+        );
+
+        if (error) {
+            errorMessage.textContent = error.message;
+        } else if (paymentIntent.status === "succeeded") {
+            window.location.href = "/orders/stripe/success/{{ order_id }}/";
+        }
+    });
+</script>
+
+{% endblock %}

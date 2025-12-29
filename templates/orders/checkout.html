@@ -20,6 +20,16 @@
 
 <form action="" method="post">
     {% csrf_token %}
+    <h3>select pyment method</h3>
+    <label for="">
+        <input type="radio" name="payment_method" value="cod" checked >
+        Cash on delivery
+    </label><br>
+    <label for="">
+        <input type="radio" name="payment_method", value="stripe">
+        Pay with Card (stripe)
+    </label><br> 
+    
     <button>Place Order</button>
 </form>
 <a href="{% url 'cart' %}"><button>back to cart</button></a>
