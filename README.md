@@ -184,69 +184,6 @@ celery -A smartcart worker -l info
 celery -A smartcart beat -l info
 ```
 
-## 📁 Project Structure
-
-```
-SmartCart-E-Commerce-Platform/
-├── smartcart/              # Main project directory
-│   ├── settings.py         # Project settings
-│   ├── urls.py            # URL routing
-│   └── wsgi.py            # WSGI configuration
-├── users/                 # User management app
-│   ├── models.py
-│   ├── views.py
-│   └── serializers.py
-├── catalog/               # Product catalog app
-│   ├── models.py          # Product, Category models
-│   ├── views.py
-│   └── search.py
-├── cart/                  # Shopping cart app
-│   ├── models.py
-│   ├── views.py
-│   └── services.py
-├── orders/                # Order management app
-│   ├── models.py
-│   ├── views.py
-│   └── processors.py
-├── payments/              # Payment processing app
-│   ├── models.py
-│   ├── views.py
-│   └── gateways/
-│       ├── stripe.py
-│       └── paypal.py
-├── reviews/               # Review system app
-│   ├── models.py
-│   ├── views.py
-│   └── moderation.py
-├── ai/                    # AI services app
-│   ├── recommendations.py # Recommendation engine
-│   ├── sentiment.py       # Sentiment analysis
-│   └── models/            # ML model files
-├── chatbot/               # Chatbot app
-│   ├── models.py
-│   ├── views.py
-│   └── handlers.py
-├── analytics/             # Analytics & reporting
-│   ├── views.py
-│   └── reports.py
-├── templates/             # Django templates
-│   ├── base.html
-│   ├── home.html
-│   ├── products/
-│   ├── cart/
-│   └── orders/
-├── static/                # Static files (CSS, JS, images)
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── media/                 # User-uploaded media
-├── requirements.txt       # Python dependencies
-├── Dockerfile            # Docker configuration
-├── docker-compose.yml    # Multi-container setup
-└── README.md             # This file
-```
-
-## 🔌 API Documentation
 
 ### Authentication
 ```
