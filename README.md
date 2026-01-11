@@ -30,33 +30,6 @@ SmartCart is a modern, intelligent e-commerce platform built with Django that le
 - **Analytics Dashboard** - Sales reports and user activity insights
 - **Review Moderation** - Approve and manage customer reviews
 
-## 🏗️ Architecture
-
-SmartCart follows a **modular monolithic architecture** with microservices principles:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Frontend (Django Templates)               │
-│              Bootstrap + JavaScript + AJAX                   │
-└─────────────────────────────────────────────────────────────┘
-                              ↓
-┌─────────────────────────────────────────────────────────────┐
-│              Django Backend (MVT + DRF APIs)                 │
-│  ┌──────────┬──────────┬──────────┬──────────┬──────────┐  │
-│  │  Users   │ Catalog  │   Cart   │  Orders  │ Payments │  │
-│  ├──────────┼──────────┼──────────┼──────────┼──────────┤  │
-│  │ Reviews  │    AI    │ Chatbot  │Analytics │  Admin   │  │
-│  └──────────┴──────────┴──────────┴──────────┴──────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                              ↓
-    ┌─────────────┬──────────────────┬─────────────────┐
-    ↓             ↓                  ↓                 ↓
-┌─────────┐  ┌─────────┐      ┌──────────┐     ┌──────────┐
-│PostgreSQL│  │  Redis  │      │  Celery  │     │ S3/Media │
-│   DB    │  │  Cache  │      │ Workers  │     │ Storage  │
-└─────────┘  └─────────┘      └──────────┘     └──────────┘
-```
-
 ### System Components
 
 1. **Frontend Layer** - Django Templates with Bootstrap for responsive UI
@@ -103,7 +76,7 @@ SmartCart follows a **modular monolithic architecture** with microservices princ
 
 ### Prerequisites
 - Python 3.10+
-- PostgreSQL 13+
+- sqllite
 - Redis 6+
 - Node.js (for frontend build tools, optional)
 
