@@ -4,6 +4,7 @@ from .models import Cart, CartItem
 from store.models import Product
 from django.views.generic import DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from ai_engine.tracking import track_user_behavior
 
 
 # Create your views here.
@@ -20,6 +21,14 @@ class AddToCartView(LoginRequiredMixin, View):
         if not created:
             item.quantity +=1
             item.save()
+        
+        # Track add to cart behavior for AI
+        track_user_behavior(
+            user=request.user,
+            action='add_to_cart',
+            product=product,
+            session_id=request.session.session_key
+        )
             
         return redirect("cart")
     

@@ -6,6 +6,7 @@ from cart.models import Cart, CartItem
 from django.views.generic import DetailView, ListView
 from .ulits import send_order_email
 from django.core.mail import send_mail
+from ai_engine.tracking import track_user_behavior
 
 
 # Create your views here.
@@ -42,6 +43,13 @@ class CheckoutView(View):
                 product= item.product,
                 quantity = item.quantity,
                 price = item.product.price
+            )
+            # Track purchase behavior for AI recommendations
+            track_user_behavior(
+                user=request.user,
+                action='purchase',
+                product=item.product,
+                session_id=request.session.session_key
             )
             
         

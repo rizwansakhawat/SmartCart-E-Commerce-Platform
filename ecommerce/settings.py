@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'store',
     'cart',
     'orders',
+    'ai_engine',
 ]
 
 LOGIN_URL = "login"
@@ -72,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ai_engine.tracking.UserBehaviorMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'

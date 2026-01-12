@@ -16,7 +16,7 @@ class Order(models.Model):
         ("cancelled", "cancelled"),
     )
     PAYMENT_METHODS =(
-        ("cod", "Chas on delivery"),
+        ("cod", "Cash on delivery"),
         ("stripe", "Stripe"),
     )
     

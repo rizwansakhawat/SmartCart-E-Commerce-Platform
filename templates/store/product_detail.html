@@ -2,30 +2,133 @@
 {% block title %}{{product.name}} {% endblock title %}
 
 {% block content %}
-<h2>product.name</h2>
+<div class="container">
+    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); margin-bottom: 30px;">
+        <h2 style="color: #667eea;">{{product.name}}</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+            <div>
+                <h3 style="color: #666; font-size: 14px; text-transform: uppercase; margin-bottom: 15px;">Product Images</h3>
+                {% if product.images.all %}
+                    <div style="background: #f5f5f5; border-radius: 10px; padding: 20px;">
+                        {% for img in product.images.all %}
+                            <img src="{{img.image.url}}" width="100%" style="border-radius: 8px; margin-bottom: 10px;">
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div style="background: #f5f5f5; border-radius: 10px; padding: 40px; text-align: center; color: #999;">
+                        <p>No images available</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div>
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 12px; margin-bottom: 20px;">
+                    <p style="font-size: 14px; text-transform: uppercase; opacity: 0.9; margin: 0;">Price</p>
+                    <p style="font-size: 36px; font-weight: 700; margin: 10px 0 0;">RS {{product.price}}</p>
+                </div>
+                
+                <h3 style="color: #333; margin: 20px 0 10px;">Description</h3>
+                <p style="color: #666; line-height: 1.8; margin-bottom: 20px;">{{product.description}}</p>
+                
+                <form method="post" action="{% url 'add_to_cart' product.id %}" style="margin: 20px 0;">
+                    {% csrf_token %}
+                    <button type="submit">🛒 Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-<p>price: RS{{product.price}} </p>
-<p >{{product.description}} </p>
+    <!-- Customer Reviews Section -->
+    {% if reviews %}
+    <div class="reviews-section">
+        <h3 style="color: #667eea;">📝 Customer Reviews</h3>
+        {% if review_stats %}
+        <div class="review-stats">
+            <p style="margin: 0; font-size: 18px; font-weight: 700;">⭐ Average Rating: {{ review_stats.average_rating }}/5</p>
+            <p style="margin: 5px 0 0; font-size: 13px; opacity: 0.9;">Based on {{ review_stats.total }} reviews</p>
+            <div style="margin-top: 15px; display: flex; gap: 15px; flex-wrap: wrap;">
+                <div style="background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 13px;">
+                    <span class="positive">👍 {{ review_stats.sentiment_counts.positive }} Positive</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 13px;">
+                    <span class="neutral">😐 {{ review_stats.sentiment_counts.neutral }} Neutral</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 13px;">
+                    <span class="negative">👎 {{ review_stats.sentiment_counts.negative }} Negative</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% for review in reviews %}
+        <div class="review-card">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                <div>
+                    <p style="margin: 0; font-weight: 600; color: #667eea;">{{ review.user.username }}
+                        {% if review.is_verified_purchase %}<span class="verified">✓ Verified Purchase</span>{% endif %}
+                    </p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="margin: 0; font-size: 16px;">
+                        {% for i in "12345" %}{% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}{% endfor %}
+                    </p>
+                </div>
+            </div>
+            
+            <p style="margin: 8px 0; font-weight: 600; color: #333;"><strong>{{ review.title }}</strong></p>
+            <p style="margin: 8px 0; color: #666;">{{ review.comment }}</p>
+            
+            <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
+                {% if review.sentiment == 'positive' %}
+                    <span style="background: #4caf50; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">✓ Positive</span>
+                {% elif review.sentiment == 'negative' %}
+                    <span style="background: #f44336; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">✗ Negative</span>
+                {% else %}
+                    <span style="background: #ff9800; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">~ Neutral</span>
+                {% endif %}
+                <small style="color: #999;">{{ review.created_at|date:'M d, Y' }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
-<h3>images</h3>
+    <!-- Similar Products -->
+    {% if similar_products %}
+    <div class="similar-products">
+        <h3 style="color: #667eea;">🔍 Similar Products You Might Like</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+            {% for similar in similar_products %}
+            <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease;" 
+                 onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 30px rgba(102, 126, 234, 0.3)'" 
+                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'">
+                <a href="{% url 'product_detail' similar.id %}" style="text-decoration: none; color: inherit;">
+                    <div style="background: #f5f5f5; height: 200px; display: flex; align-items: center; justify-content: center;">
+                        {% if similar.images.first %}
+                            <img src="{{ similar.images.first.image.url }}" alt="{{ similar.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                            <span style="color: #999;">No Image</span>
+                        {% endif %}
+                    </div>
+                    <div style="padding: 15px;">
+                        <p style="margin: 0; font-weight: 600; color: #333;">{{ similar.name }}</p>
+                        <p style="margin: 8px 0 0; color: #667eea; font-weight: 700; font-size: 16px;">RS {{ similar.price }}</p>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 
-{% for img in product.images.all %}
-    <img src="{{img.image.url}}" width="200">
-    
-{% empty %}
-<p>no imge</p>
-
-    
-{% endfor %}
-<div>
-<form method="post" action="{% url 'add_to_cart' product.id %}">
-    {% csrf_token %}
-    <button type="submit">Add to Cart</button>
-</form>
-
-
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="{% url 'home' %}" style="background: #667eea; color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s; display: inline-block;"
+           onmouseover="this.style.background='#764ba2'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.4)'; this.style.transform='translateY(-3px)'"
+           onmouseout="this.style.background='#667eea'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+            ← Back to Home
+        </a>
+    </div>
 </div>
-<br>
-<a href="{% url 'home' %}">Home Page</a>
     
 {% endblock content %}

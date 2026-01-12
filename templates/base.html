@@ -4,35 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}E-Commerce{% endblock title %}</title>
+    <title>{% block title %}SmartCart - AI-Powered E-Commerce{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>E-Commernce</h1>
-        {% if user.is_authenticated %}
-            <p>Welcom , {{user.username}}</p>
-            <a href="{% url 'my_orders' %}"> <button>My Orders</button></a>
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button>Logout</button>
-            </form>
-
-        {% else %}
-        <a href="{% url 'login' %}"><button>Login</button></a>
-        <a href="{% url 'register' %}"><button>Register</button></a>
-        {% endif %}
-        <h2><a href="{% url 'cart' %}"><button>Your cart</button></a></h2>
-        <a href="{% url 'home' %}"><button>Home page</button></a>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <h1>🛒 SmartCart</h1>
+            {% if user.is_authenticated %}
+                <p style="margin: 0; font-size: 14px;">👋 Welcome, <strong>{{user.username}}</strong></p>
+            {% endif %}
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <a href="{% url 'home' %}"><button>🏠 Home</button></a>
+            <a href="{% url 'cart' %}"><button>🛒 Cart</button></a>
             
+            {% if user.is_authenticated %}
+                <a href="{% url 'my_orders' %}"><button>📦 My Orders</button></a>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit">🚪 Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}"><button>🔓 Login</button></a>
+                <a href="{% url 'register' %}"><button>✍️ Register</button></a>
+            {% endif %}
+        </div>
     </header>
-    <hr>
 
-    
     {% block content %}
-        <h1>hi</h1>
+        <h1>Welcome to SmartCart</h1>
     {% endblock content %}
+    
+    <!-- AI Chatbot Widget -->
+    {% if user.is_authenticated %}
+        {% include 'ai_engine/chatbot_widget.html' %}
+    {% endif %}
         
     <footer>
         <hr>
